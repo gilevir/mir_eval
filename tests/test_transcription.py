@@ -37,7 +37,7 @@ def test_match_notes():
         mir_eval.transcription.match_notes(ref_int, ref_pitch, est_int,
                                            est_pitch)
 
-    assert matching == [(0, 0), (3, 4)]
+    assert matching == [(0, 0), (3, 3)]
 
     matching = \
         mir_eval.transcription.match_notes(ref_int, ref_pitch, est_int,
