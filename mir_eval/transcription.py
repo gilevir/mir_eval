@@ -358,13 +358,13 @@ def evaluate(ref_intervals, ref_pitches, est_intervals, est_pitches, **kwargs):
     scores = collections.OrderedDict()
 
     # Precision, recall and f-measure taking note offsets into account
-    offset_ratio = kwargs.get('offset_ratio', .2)
-    if offset_ratio is not None:
+    kwargs.setdefault('offset_ratio', 0.2)
+    if kwargs['offset_ratio'] is not None:
         (scores['Precision'],
          scores['Recall'],
          scores['F-measure']) = util.filter_kwargs(
             precision_recall_f1, ref_intervals, ref_pitches, est_intervals,
-            est_pitches, offset_ratio=offset_ratio, **kwargs)
+            est_pitches, **kwargs)
 
     # Precision, recall and f-measure NOT taking note offsets into account
     kwargs['offset_ratio'] = None
