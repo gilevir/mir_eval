@@ -360,15 +360,25 @@ def precision_recall_f1_duan(ref_intervals, ref_pitches, est_intervals,
                 est_freq = hz2midi(est_pitches[est_note])
 
                 if offset_ratio is None:
-                    if (np.abs(est_freq - gt_freq) <= 0.5) and (np.abs(est_onset - gt_onset) <= onset_tolerance):
+                    if (np.abs(est_freq - gt_freq) <= 0.5) and \
+                            (np.abs(est_onset - gt_onset) <= onset_tolerance):
                         nCorrect = nCorrect + 1
-                        AOR = AOR + (min(est_offset, gt_offset) - max(est_onset, gt_onset)) / (max(est_offset, gt_offset) - min(est_onset, gt_onset))
+                        AOR = AOR + (min(est_offset, gt_offset) -
+                                     max(est_onset, gt_onset)) / \
+                                    (max(est_offset, gt_offset) -
+                                     min(est_onset, gt_onset))
                         IsUsedEst[est_note] = 1
                         # break;
                 else:
-                    if (np.abs(est_freq - gt_freq) <= 0.5) and (np.abs(est_onset - gt_onset) <= onset_tolerance) and (abs(est_offset - gt_offset) <= offset_ratio * (gt_offset-gt_onset)):
+                    if (np.abs(est_freq - gt_freq) <= 0.5) and \
+                            (np.abs(est_onset - gt_onset) <= onset_tolerance) \
+                            and (abs(est_offset - gt_offset) <= offset_ratio *
+                                (gt_offset-gt_onset)):
                         nCorrect = nCorrect + 1
-                        AOR = AOR + (min(est_offset, gt_offset) - max(est_onset, gt_onset)) / (max(est_offset, gt_offset) - min(est_onset, gt_onset))
+                        AOR = AOR + (min(est_offset, gt_offset) -
+                                     max(est_onset, gt_onset)) / \
+                                    (max(est_offset, gt_offset) -
+                                     min(est_onset, gt_onset))
                         IsUsedEst[est_note] = 1
                         # break;
 
