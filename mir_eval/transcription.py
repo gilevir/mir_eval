@@ -316,11 +316,7 @@ def precision_recall_f1(ref_intervals, ref_pitches, est_intervals, est_pitches,
     # When reference notes are empty, metrics are undefined, return 0's
     if len(ref_pitches) == 0 or len(est_pitches) == 0:
         return 0., 0., 0.
-
-    # Round down onset and offset times
-    # ref_intervals = 0.01 * np.floor(ref_intervals * 100)
-    # est_intervals = 0.01 * np.floor(est_intervals * 100)
-
+    
     matching = match_notes(ref_intervals, ref_pitches, est_intervals,
                            est_pitches, onset_tolerance=onset_tolerance,
                            pitch_tolerance=pitch_tolerance,
