@@ -338,6 +338,9 @@ def precision_recall_f1_duan(ref_intervals, ref_pitches, est_intervals,
     def hz2midi(hz):
         return 12 * (np.log2(hz) - np.log2(440.0)) + 69
 
+    # Round down onset and offset times
+    ref_intervals = 0.01 * np.floor(ref_intervals * 100)
+    est_intervals = 0.01 * np.floor(est_intervals * 100)
 
     EstNoteNum = len(est_intervals)
     GTNoteNum = len(ref_intervals)
@@ -381,6 +384,11 @@ def precision_recall_f1_duan(ref_intervals, ref_pitches, est_intervals,
                                      min(est_onset, gt_onset))
                         IsUsedEst[est_note] = 1
                         # break;
+
+    # debug
+    if offset_ratio is not None:
+        print("EstNoteNum, GTNoteNum, nCorrect: %d, %d, %d" %
+              (EstNoteNum, GTNoteNum, nCorrect))
 
      # calculate statistics
     Pre = float(nCorrect)/EstNoteNum
