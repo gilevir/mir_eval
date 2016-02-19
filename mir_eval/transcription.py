@@ -434,7 +434,7 @@ def evaluate(ref_intervals, ref_pitches, est_intervals, est_pitches, **kwargs):
         (scores['Precision'],
          scores['Recall'],
          scores['F-measure']) = util.filter_kwargs(
-            precision_recall_f1, ref_intervals, ref_pitches, est_intervals,
+            precision_recall_f1_duan, ref_intervals, ref_pitches, est_intervals,
             est_pitches, **kwargs)
 
     # Precision, recall and f-measure NOT taking note offsets into account
@@ -442,7 +442,7 @@ def evaluate(ref_intervals, ref_pitches, est_intervals, est_pitches, **kwargs):
     (scores['Precision_no_offset'],
      scores['Recall_no_offset'],
      scores['F-measure_no_offset']) = \
-        util.filter_kwargs(precision_recall_f1, ref_intervals, ref_pitches,
+        util.filter_kwargs(precision_recall_f1_duan, ref_intervals, ref_pitches,
                            est_intervals, est_pitches, **kwargs)
 
     return scores
