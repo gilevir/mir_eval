@@ -317,6 +317,10 @@ def precision_recall_f1(ref_intervals, ref_pitches, est_intervals, est_pitches,
     if len(ref_pitches) == 0 or len(est_pitches) == 0:
         return 0., 0., 0.
 
+    # Round down onset and offset times
+    ref_intervals = 0.01 * np.floor(ref_intervals * 100)
+    est_intervals = 0.01 * np.floor(est_intervals * 100)
+
     matching = match_notes(ref_intervals, ref_pitches, est_intervals,
                            est_pitches, onset_tolerance=onset_tolerance,
                            pitch_tolerance=pitch_tolerance,
@@ -442,7 +446,7 @@ def evaluate(ref_intervals, ref_pitches, est_intervals, est_pitches, **kwargs):
         (scores['Precision'],
          scores['Recall'],
          scores['F-measure']) = util.filter_kwargs(
-            precision_recall_f1_duan, ref_intervals, ref_pitches, est_intervals,
+            precision_recall_f1, ref_intervals, ref_pitches, est_intervals,
             est_pitches, **kwargs)
 
     # Precision, recall and f-measure NOT taking note offsets into account
@@ -450,7 +454,7 @@ def evaluate(ref_intervals, ref_pitches, est_intervals, est_pitches, **kwargs):
     (scores['Precision_no_offset'],
      scores['Recall_no_offset'],
      scores['F-measure_no_offset']) = \
-        util.filter_kwargs(precision_recall_f1_duan, ref_intervals, ref_pitches,
+        util.filter_kwargs(precision_recall_f1, ref_intervals, ref_pitches,
                            est_intervals, est_pitches, **kwargs)
 
     return scores
