@@ -36,17 +36,40 @@ For further details see Salamon, 2013 (page 186), and references therein:
     Salamon, J. (2013). Melody Extraction from Polyphonic Music Signals.
     Ph.D. thesis, Universitat Pompeu Fabra, Barcelona, Spain, 2013.
 
-Note: two different evaluation scripts have been used in MIREX over the years,
-where one uses ``<`` for matching onsets, offsets, and pitch values, whilst
-the other uses ``<=`` for these checks. That is, if the distance between two
-onsets is exactly equal to the defined threshold (e.g. 0.05), then the former
-script would not consider the two notes to have matching onsets, whilst the
-latter would. `mir_eval` provides both options: by default the latter
-(``<=``) is used, but you can set ``strict=True`` when calling
+
+IMPORTANT NOTE: the evaluation code in `mir_eval` contains several important
+differences with respect to the code used in MIREX 2015 for the Note Tracking
+subtask on the Su dataset (henceforth "MIREX"):
+
+1. `mir_eval` uses bipartite graph matching to find the optimal pairing of
+   reference notes to estimated notes. MIREX uses a greedy matching algorithm,
+   which can produce sub-optimal note matching. This will result in `mir_eval`s
+   evaluation metrics being slightly higher compared to MIREX.
+2. MIREX rounds down the onset and offset times of each note to 2 decimal
+   points using `new_time = 0.01 * floor(time*100)`. `mir_eval` doesn't modify
+   the note onset and offset times. This will bring our metrics down a notch
+   compared to the MIREX results.
+3. In the MIREX wiki, the criterion for matching offsets is that they must be
+   within 0.2 * ref_duration **or 0.05 from each other, whichever is greater**
+   (i.e. `offset_dif <= max(0.2 * ref_duration, 0.05). The MIREX code however
+   only uses a threshold of 0.2 * ref_duration, without the 0.05 minimum.
+   Since `mir_eval` does include this minimum, it might produce slightly higher
+   results compared to MIREX.
+
+This means that differences 1 and 3 bring `mir_eval`'s metrics up compared to
+MIREX, whilst 2 brings them down. Based on internal testing, overall the effect
+of these three differences is that the Precision, Recall and F-measure returned
+by `mir_eval` will be higher compared to MIREX by something between 0.01 and
+0.03.
+
+Finally, note that different evaluation scripts have been used for the Multi-F0
+Note Tracking task in MIREX over the years. In particular, some scripts used
+``<`` for matching onsets, offsets, and pitch values, whilst the others used
+``<=`` for these checks. `mir_eval` provides both options: by default the
+latter (``<=``) is used, but you can set ``strict=True`` when calling
 :func:`mir_eval.transcription.precision_recall_f1()` in which case ``<`` will
-be used. The default value (``strict=False``) matches the evaluation code that
-was used to produce the results reported on the MIREX website for the "Su"
-dataset in 2015.
+be used. The default value (``strict=False``) is the same as that used in
+MIREX 2015 for the Note Tracking subtask on the Su dataset.
 
 
 Conventions
