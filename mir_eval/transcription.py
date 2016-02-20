@@ -221,8 +221,8 @@ def match_notes(ref_intervals, ref_pitches, est_intervals, est_pitches,
     onset_hit_matrix = cmp_func(onset_distances, onset_tolerance)
 
     # check for pitch matches
-    pitch_distances = np.abs(1200*np.log2(np.divide.outer(ref_pitches,
-                                                          est_pitches)))
+    pitch_distances = np.abs(1200*np.subtract.outer(np.log2(ref_pitches),
+                                                     np.log2(est_pitches)))
     pitch_hit_matrix = cmp_func(pitch_distances, pitch_tolerance)
 
     # check for offset matches if offset_ratio is not None
