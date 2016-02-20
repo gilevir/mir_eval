@@ -234,9 +234,8 @@ def match_notes(ref_intervals, ref_pitches, est_intervals, est_pitches,
         # doesn't match the notes because of precision issues.
         offset_distances = np.around(offset_distances, decimals=4)
         ref_durations = util.intervals_to_durations(ref_intervals)
-        offset_tolerances = offset_ratio * ref_durations
-        min_tolerance_inds = offset_tolerances < offset_min_tolerance
-        offset_tolerances[min_tolerance_inds] = offset_min_tolerance
+        offset_tolerances = np.maximum(offset_ratio * ref_durations,
+                                       offset_min_tolerance)
         offset_hit_matrix = \
             cmp_func(offset_distances, offset_tolerances.reshape(-1, 1))
     else:
