@@ -239,7 +239,7 @@ def match_notes(ref_intervals, ref_pitches, est_intervals, est_pitches,
         offset_hit_matrix = \
             cmp_func(offset_distances, offset_tolerances.reshape(-1, 1))
     else:
-        offset_hit_matrix = np.ones_like(onset_hit_matrix)
+        offset_hit_matrix = True
 
     # check for overall matches
     note_hit_matrix = onset_hit_matrix * pitch_hit_matrix * offset_hit_matrix
