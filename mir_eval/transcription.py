@@ -97,6 +97,10 @@ from . import util
 import warnings
 
 
+# The number of decimals to keep for onset/offset threshold checks
+N_DECIMALS = 4
+
+
 def validate(ref_intervals, ref_pitches, est_intervals, est_pitches):
     """Checks that the input annotations to a metric look like time intervals
     and a pitch list, and throws helpful errors if not.
@@ -217,7 +221,7 @@ def match_notes(ref_intervals, ref_pitches, est_intervals, est_pitches,
     # Round distances to a target precision to avoid the situation where
     # if the distance is exactly 50ms (and strict=False) it erroneously
     # doesn't match the notes because of precision issues.
-    onset_distances = np.around(onset_distances, decimals=4)
+    onset_distances = np.around(onset_distances, decimals=N_DECIMALS)
     onset_hit_matrix = cmp_func(onset_distances, onset_tolerance)
 
     # check for pitch matches
@@ -232,7 +236,7 @@ def match_notes(ref_intervals, ref_pitches, est_intervals, est_pitches,
         # Round distances to a target precision to avoid the situation where
         # if the distance is exactly 50ms (and strict=False) it erroneously
         # doesn't match the notes because of precision issues.
-        offset_distances = np.around(offset_distances, decimals=4)
+        offset_distances = np.around(offset_distances, decimals=N_DECIMALS)
         ref_durations = util.intervals_to_durations(ref_intervals)
         offset_tolerances = np.maximum(offset_ratio * ref_durations,
                                        offset_min_tolerance)
